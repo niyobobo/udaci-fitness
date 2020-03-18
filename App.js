@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import AddEntry from './components/addEntry';
+import AddEntry from './components/AddEntry';
 
 class App extends Component {
   render() {
