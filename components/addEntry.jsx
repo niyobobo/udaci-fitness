@@ -1,16 +1,26 @@
+import { Ionicons } from '@expo/vector-icons';
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import { getMetricMetaInfo } from '../utils/helpers';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { getMetricMetaInfo, timeToString } from '../utils/helpers';
+import DateHeader from './DateHeader';
+import TextButton from './TextButton';
 import UdaciSlider from './UdaciSlidder';
 import UdaciSteppers from './UdaciSteppers';
-import DateHeader from './DateHeader';
+
+const SubmitBtn = ({ onPress }) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Text>SUBMIT</Text>
+    </TouchableOpacity>
+  );
+};
 
 class AddEntry extends Component {
   state = {
     run: 0,
     bike: 0,
-    bike: 0,
     swim: 0,
+    sleep: 0,
     eat: 0
   };
 
@@ -42,8 +52,48 @@ class AddEntry extends Component {
     }));
   };
 
+  submit = () => {
+    const key = timeToString();
+    const entry = this.state;
+
+    // Update redux
+    this.setState(() => ({
+      run: 0,
+      bike: 0,
+      swim: 0,
+      sleep: 0,
+      eat: 0
+    }));
+    // Navigate to home
+
+    // Save to db
+
+    // Clear local notification
+  };
+
+  reset = () => {
+    const key = timeToString();
+    const entry = this.state;
+
+    //update redux
+
+    // Route to home
+
+    // Update db
+  };
+
   render() {
     const metaInfo = getMetricMetaInfo();
+
+    if (this.props.alreadyLogged) {
+      return (
+        <View>
+          <Ionicons name="ios-happy" size={100} />
+          <Text>You already logged your information for today</Text>
+          <TextButton onPress={this.reset}>Reset</TextButton>
+        </View>
+      );
+    }
     return (
       <View>
         <DateHeader date={new Date().toLocaleDateString()} />
@@ -70,6 +120,7 @@ class AddEntry extends Component {
             </View>
           );
         })}
+        <SubmitBtn onPress={this.submit} />
       </View>
     );
   }
