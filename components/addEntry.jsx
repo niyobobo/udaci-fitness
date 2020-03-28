@@ -1,7 +1,14 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { Component } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { getMetricMetaInfo, timeToString } from '../utils/helpers';
+import { connect } from 'react-redux';
+import { addEntry } from '../redux/actions';
+import { removeEntry, submitEntry } from '../utils/api';
+import {
+  getDailyReminderValue,
+  getMetricMetaInfo,
+  timeToString
+} from '../utils/helpers';
 import DateHeader from './DateHeader';
 import TextButton from './TextButton';
 import UdaciSlider from './UdaciSlidder';
@@ -56,7 +63,12 @@ class AddEntry extends Component {
     const key = timeToString();
     const entry = this.state;
 
-    // Update redux
+    this.props.dispatch(
+      addEntry({
+        [key]: entry
+      })
+    );
+
     this.setState(() => ({
       run: 0,
       bike: 0,
@@ -66,7 +78,7 @@ class AddEntry extends Component {
     }));
     // Navigate to home
 
-    // Save to db
+    submitEntry({ entry, key });
 
     // Clear local notification
   };
@@ -75,11 +87,15 @@ class AddEntry extends Component {
     const key = timeToString();
     const entry = this.state;
 
-    //update redux
+    this.props.dispatch(
+      addEntry({
+        [key]: getDailyReminderValue()
+      })
+    );
 
     // Route to home
 
-    // Update db
+    removeEntry(key);
   };
 
   render() {
@@ -126,4 +142,11 @@ class AddEntry extends Component {
   }
 }
 
-export default AddEntry;
+const mapStateToProps = state => {
+  const key = timeToString();
+  return {
+    alreadyLogged: state[key] && typeof state[key].today === 'undefined'
+  };
+};
+
+export default connect(mapStateToProps)(AddEntry);
