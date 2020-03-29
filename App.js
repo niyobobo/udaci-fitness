@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import AddEntry from './components/AddEntry';
 import { Provider } from 'react-redux';
-import store from './redux/store'
+import AddEntry from './components/AddEntry';
+import store from './redux/store';
+import History from './components/History';
 
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <View>
-          <AddEntry/>
+        <View style={{ flex: 1 }}>
+          <View style={{height: 50}}/>
+          <History/>
         </View>
       </Provider>
-     );
+    );
   }
 }
 

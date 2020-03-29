@@ -1,49 +1,67 @@
 import React from 'react';
-import { View } from 'react-native';
-import { FontAwesome, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { white } from './colors';
+import { View, StyleSheet, Platform} from 'react-native';
+import {
+  FontAwesome,
+  MaterialCommunityIcons,
+  MaterialIcons
+} from '@expo/vector-icons';
+import { white, red, blue, pink, lightPurple, orange } from './colors';
 
 export function isBetween(num, x, y) {
   if (num >= x && num <= y) {
-    return true
+    return true;
   }
 
-  return false
+  return false;
 }
 
 export function calculateDirection(heading) {
-  let direction = ''
+  let direction = '';
 
   if (isBetween(heading, 0, 22.5)) {
-    direction = 'North'
+    direction = 'North';
   } else if (isBetween(heading, 22.5, 67.5)) {
-    direction = 'North East'
+    direction = 'North East';
   } else if (isBetween(heading, 67.5, 112.5)) {
-    direction = 'East'
+    direction = 'East';
   } else if (isBetween(heading, 112.5, 157.5)) {
-    direction = 'South East'
+    direction = 'South East';
   } else if (isBetween(heading, 157.5, 202.5)) {
-    direction = 'South'
+    direction = 'South';
   } else if (isBetween(heading, 202.5, 247.5)) {
-    direction = 'South West'
+    direction = 'South West';
   } else if (isBetween(heading, 247.5, 292.5)) {
-    direction = 'West'
+    direction = 'West';
   } else if (isBetween(heading, 292.5, 337.5)) {
-    direction = 'North West'
+    direction = 'North West';
   } else if (isBetween(heading, 337.5, 360)) {
-    direction = 'North'
+    direction = 'North';
   } else {
-    direction = 'Calculating'
+    direction = 'Calculating';
   }
 
-  return direction
+  return direction;
 }
 
 export function timeToString(time = Date.now()) {
-  const date = new Date(time)
-  const todayUTC = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-  return todayUTC.toISOString().split('T')[0]
+  const date = new Date(time);
+  const todayUTC = new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+  );
+  return todayUTC.toISOString().split('T')[0];
 }
+
+const styles = StyleSheet.create({
+  iconContainer: {
+    padding: 5,
+    borderRadius: 5,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 20
+  }
+});
 
 export function getMetricMetaInfo(metric) {
   const info = {
@@ -55,12 +73,8 @@ export function getMetricMetaInfo(metric) {
       type: 'steppers',
       getIcon: () => {
         return (
-          <View>
-            <MaterialIcons
-              name = 'directions-run'
-              color = {'black'}
-              size={35}
-            />
+          <View style={[styles.iconContainer, { backgroundColor: red}]}>
+            <MaterialIcons name="directions-run" color={white} size={35} />
           </View>
         );
       }
@@ -73,12 +87,8 @@ export function getMetricMetaInfo(metric) {
       type: 'steppers',
       getIcon: () => {
         return (
-          <View>
-            <MaterialCommunityIcons
-              name = 'bike'
-              color = {'black'}
-              size={35}
-            />
+          <View style={[styles.iconContainer, { backgroundColor: orange}]}>
+            <MaterialCommunityIcons name="bike" color={white} size={35} />
           </View>
         );
       }
@@ -91,12 +101,8 @@ export function getMetricMetaInfo(metric) {
       type: 'steppers',
       getIcon: () => {
         return (
-          <View>
-            <MaterialCommunityIcons
-              name = 'swim'
-              color = {'black'}
-              size={35}
-            />
+          <View style={[styles.iconContainer, { backgroundColor: blue}]}>
+            <MaterialCommunityIcons name="swim" color={white} size={35} />
           </View>
         );
       }
@@ -109,12 +115,8 @@ export function getMetricMetaInfo(metric) {
       type: 'slider',
       getIcon: () => {
         return (
-          <View>
-            <FontAwesome
-              name = 'bed'
-              color = {'black'}
-              size={35}
-            />
+          <View style={[styles.iconContainer, { backgroundColor: lightPurple}]}>
+            <FontAwesome name="bed" color={white} size={35} />
           </View>
         );
       }
@@ -127,25 +129,19 @@ export function getMetricMetaInfo(metric) {
       type: 'slider',
       getIcon: () => {
         return (
-          <View>
-            <MaterialCommunityIcons
-              name = 'food'
-              color = {'black'}
-              size={35}
-            />
+          <View style={[styles.iconContainer, { backgroundColor: pink}]}>
+            <MaterialCommunityIcons name="food" color={white} size={35} />
           </View>
         );
       }
     }
   };
 
-  return typeof metric === 'undefined'
-      ? info
-      : info[metric]
+  return typeof metric === 'undefined' ? info : info[metric];
 }
 
 export const getDailyReminderValue = () => {
   return {
-    today: '👋 Don\'t forget to log your data today'
-  }
-}
+    today: "👋 Don't forget to log your data today"
+  };
+};
