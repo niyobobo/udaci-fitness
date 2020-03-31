@@ -1,16 +1,19 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Constants from 'expo-constants';
 import React, { Component } from 'react';
 import { StatusBar, View } from 'react-native';
 import { Provider } from 'react-redux';
 import AddEntry from './components/AddEntry';
+import EntryDetails from './components/EntryDetails';
 import History from './components/History';
 import store from './redux/store';
-import { purple } from './utils/colors';
+import { purple, white } from './utils/colors';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const AppStatusBar = ({ backgroundColor, ...props }) => {
   return (
@@ -20,29 +23,53 @@ const AppStatusBar = ({ backgroundColor, ...props }) => {
   );
 };
 
+const TabNavigation = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
+          if (route.name === 'History') {
+            iconName = 'ios-bookmarks';
+          } else if (route.name === 'AddEntry') {
+            iconName = 'ios-add-circle-outline';
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        }
+      })}
+    >
+      <Tab.Screen name="History" component={History} />
+      <Tab.Screen
+        name="AddEntry"
+        component={AddEntry}
+        options={{ title: 'Add Entry' }}
+      />
+    </Tab.Navigator>
+  );
+};
+
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
         <NavigationContainer>
           <AppStatusBar backgroundColor={purple} barStyle="light-content" />
-          <Tab.Navigator
-            screenOptions={({ route }) => ({
-              tabBarIcon: ({ color, size }) => {
-                let iconName;
-                if (route.name === 'History') {
-                  iconName = 'ios-bookmarks';
-                } else if (route.name === 'Add Entry') {
-                  iconName = 'ios-add-circle-outline';
-                }
-
-                return <Ionicons name={iconName} size={size} color={color} />;
+          <Stack.Navigator
+            screenOptions={{
+              headerTintColor: white,
+              headerStyle: {
+                backgroundColor: purple
               }
-            })}
+            }}
           >
-            <Tab.Screen name="History" component={History} />
-            <Tab.Screen name="Add Entry" component={AddEntry} />
-          </Tab.Navigator>
+            <Stack.Screen name="Home" component={TabNavigation} />
+            <Stack.Screen
+              name="EntryDetails"
+              component={EntryDetails}
+              options={({ route }) => ({ title: route.params.entryId })}
+            />
+          </Stack.Navigator>
         </NavigationContainer>
       </Provider>
     );

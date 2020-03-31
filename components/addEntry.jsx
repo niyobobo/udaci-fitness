@@ -1,21 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { addEntry } from '../redux/actions';
 import { removeEntry, submitEntry } from '../utils/api';
 import { purple, white } from '../utils/colors';
-import {
-  getDailyReminderValue,
-  getMetricMetaInfo,
-  timeToString
-} from '../utils/helpers';
+import { getDailyReminderValue, getMetricMetaInfo, timeToString } from '../utils/helpers';
 import DateHeader from './DateHeader';
 import TextButton from './TextButton';
 import UdaciSlider from './UdaciSlidder';
@@ -88,9 +78,9 @@ class AddEntry extends Component {
       sleep: 0,
       eat: 0
     }));
-    // Navigate to home
 
     submitEntry({ entry, key });
+    this.toHome();
 
     // Clear local notification
   };
@@ -105,9 +95,12 @@ class AddEntry extends Component {
       })
     );
 
-    // Route to home
-
     removeEntry(key);
+    this.toHome();
+  };
+
+  toHome = () => {
+    this.props.navigation.goBack();
   };
 
   render() {

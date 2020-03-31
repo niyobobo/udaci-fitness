@@ -9,12 +9,7 @@ const MetricCard = ({ date, metrics }) => {
     <View>
       {date && <DateHeader date={date} />}
       {Object.keys(metrics).map(metric => {
-        const {
-          getIcon,
-          display,
-          unit,
-          backgroundColor
-        } = getMetricMetaInfo(metric);
+        const { getIcon, display, unit } = getMetricMetaInfo(metric);
         return (
           <View key={metric} style={styles.metric}>
             {getIcon()}
