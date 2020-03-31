@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import AddEntry from './components/AddEntry';
 import EntryDetails from './components/EntryDetails';
 import History from './components/History';
+import Live from './components/Live';
 import store from './redux/store';
 import { purple, white } from './utils/colors';
 
@@ -44,6 +45,13 @@ const TabNavigation = () => {
         name="AddEntry"
         component={AddEntry}
         options={{ title: 'Add Entry' }}
+      />
+      <Tab.Screen
+        name="Live"
+        component={Live}
+        options={{
+          tabBarIcon: props => <Ionicons name="ios-speedometer" {...props} />
+        }}
       />
     </Tab.Navigator>
   );
