@@ -12,6 +12,7 @@ import History from './components/History';
 import Live from './components/Live';
 import store from './redux/store';
 import { purple, white } from './utils/colors';
+import { setLocalNotification } from './utils/helpers';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -58,6 +59,10 @@ const TabNavigation = () => {
 };
 
 class App extends Component {
+  componentDidMount() {
+    setLocalNotification();
+  }
+
   render() {
     return (
       <Provider store={store}>

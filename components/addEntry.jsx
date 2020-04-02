@@ -1,11 +1,23 @@
 import { Ionicons } from '@expo/vector-icons';
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { connect } from 'react-redux';
 import { addEntry } from '../redux/actions';
 import { removeEntry, submitEntry } from '../utils/api';
 import { purple, white } from '../utils/colors';
-import { getDailyReminderValue, getMetricMetaInfo, timeToString } from '../utils/helpers';
+import {
+  getDailyReminderValue,
+  getMetricMetaInfo,
+  timeToString,
+  clearLocalNotification,
+  setLocalNotification
+} from '../utils/helpers';
 import DateHeader from './DateHeader';
 import TextButton from './TextButton';
 import UdaciSlider from './UdaciSlidder';
@@ -82,12 +94,11 @@ class AddEntry extends Component {
     submitEntry({ entry, key });
     this.toHome();
 
-    // Clear local notification
+    clearLocalNotification().then(setLocalNotification);
   };
 
   reset = () => {
     const key = timeToString();
-    const entry = this.state;
 
     this.props.dispatch(
       addEntry({
